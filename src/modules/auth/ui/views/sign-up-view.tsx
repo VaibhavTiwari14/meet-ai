@@ -482,7 +482,7 @@ const SignUpView = () => {
             </div>
 
             {/* Brand Section */}
-            <div className="relative hidden bg-gradient-to-br from-green-600 to-green-800 md:flex flex-col items-center justify-center p-8">
+            <div className="relative hidden bg-radial from-sidebar-accent to-sidebar md:flex flex-col items-center justify-center p-8">
               <div className="text-center space-y-6">
                 <div className="mx-auto h-16 w-16 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center">
                   <Image

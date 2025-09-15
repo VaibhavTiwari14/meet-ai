@@ -8,7 +8,7 @@ const page = async () => {
     headers: await headers(),
   });
 
-  if (!!session) {
+  if (!session) {
     redirect("/sign-in");
   }
 

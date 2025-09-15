@@ -313,7 +313,7 @@ const SignInView = () => {
             </div>
 
             {/* Brand Section - Fixed padding issues */}
-            <div className="relative bg-gradient-to-br from-green-600 to-green-800 hidden md:flex items-center justify-center">
+            <div className="relative bg-radial from-sidebar-accent to-sidebar hidden md:flex items-center justify-center">
               <div className="text-center space-y-6">
                 <div className="mx-auto h-16 w-16 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center">
                   <Image
