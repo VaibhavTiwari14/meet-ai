@@ -49,7 +49,7 @@ const formSchema = z
       .min(2, "Name must be at least 2 characters")
       .max(50, "Name must be at most 50 characters")
       .regex(/^[a-zA-Z\s]*$/, "Name can only contain letters and spaces"),
-    email: z.email("Please enter a valid email address"),
+    email: z.string().email("Please enter a valid email address"),
     password: passwordSchema,
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })

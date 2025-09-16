@@ -9,11 +9,11 @@ import DashboardCommand from "./dashboard-command";
 const DashboardNavbar = () => {
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if ((e.key === "k" || e.key === "K" ) && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setCommandOpen((open) => !open);
       }
-    };
+    };  
 
     document.addEventListener("keydown", down);
 
@@ -38,9 +38,7 @@ const DashboardNavbar = () => {
           variant={"outline"}
           className="h-9 w-[240px] justify-start font-normal text-muted-foreground hover:text-muted-foreground "
           size={"sm"}
-          onClick={() => {
-            setCommandOpen((prev) => !prev);
-          }}
+          onClick={() => setCommandOpen((prev) => !prev)}
         >
           <SearchIcon />
           Search
