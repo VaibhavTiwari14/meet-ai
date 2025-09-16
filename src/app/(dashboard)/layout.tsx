@@ -5,9 +5,9 @@ import DashboardSidebar from "@/modules/dashboard/ui/components/dashboard-sideba
 function dashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-        <DashboardSidebar/>
+      <DashboardSidebar />
       <main className="dlex flex-col h-screen w-screen bg-muted">
-        <DashboardNavbar/>
+        <DashboardNavbar />
         {children}
       </main>
     </SidebarProvider>
