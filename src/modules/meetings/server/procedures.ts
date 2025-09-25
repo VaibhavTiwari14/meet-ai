@@ -5,10 +5,10 @@ import {
   MIN_PAGE_SIZE,
 } from "@/constants";
 import { db } from "@/db";
-import { meetings } from "@/db/schema";
+import { agents, meetings } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, count, desc, eq, getTableColumns, ilike } from "drizzle-orm";
+import { and, count, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { z } from "zod";
 import { meetingsInsertSchema, meetingsUpdateSchema } from "../schema";
 
@@ -60,8 +60,13 @@ export const meetingsRouter = createTRPCRouter({
       const data = await db
         .select({
           ...getTableColumns(meetings),
+          agent: agents,
+          duration: sql<number>`EXTRACT(EPOCH FROM (ended_at - started_at))`.as(
+            "duration"
+          ),
         })
         .from(meetings)
+        .innerJoin(agents, eq(meetings.agentId, agents.id))
         .where(
           and(
             eq(meetings.userId, ctx.auth.user.id),
@@ -75,6 +80,7 @@ export const meetingsRouter = createTRPCRouter({
       const [total] = await db
         .select({ count: count() })
         .from(meetings)
+        .innerJoin(agents, eq(meetings.agentId, agents.id))
         .where(
           and(
             eq(meetings.userId, ctx.auth.user.id),
@@ -89,21 +95,24 @@ export const meetingsRouter = createTRPCRouter({
         totalPages,
       };
     }),
-    update: protectedProcedure
-        .input(meetingsUpdateSchema)
-        .mutation(async ({ input, ctx }) => {
-          const [updatedMeeting] = await db
-            .update(meetings)
-            .set(input)
-            .where(
-              and(eq(meetings.id, input.id), eq(meetings.userId, ctx.auth.user.id))
-            )
-            .returning();
-    
-          if (!updatedMeeting) {
-            throw new TRPCError({ code: "NOT_FOUND", message: "Meeting not found." });
-          }
-    
-          return updatedMeeting;
-        }),
+  update: protectedProcedure
+    .input(meetingsUpdateSchema)
+    .mutation(async ({ input, ctx }) => {
+      const [updatedMeeting] = await db
+        .update(meetings)
+        .set(input)
+        .where(
+          and(eq(meetings.id, input.id), eq(meetings.userId, ctx.auth.user.id))
+        )
+        .returning();
+
+      if (!updatedMeeting) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Meeting not found.",
+        });
+      }
+
+      return updatedMeeting;
+    }),
 });
