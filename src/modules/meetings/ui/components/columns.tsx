@@ -90,6 +90,7 @@ export const columns: ColumnDef<Meeting>[] = [
               row.original.status === "processing" && "animate-spin"
             )}
           />
+          {row.original.status}
         </Badge>
       );
     },
