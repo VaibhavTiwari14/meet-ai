@@ -10,10 +10,14 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import MeetingIdViewHeader from "../components/meetings-id-view-header";
-import UpdateMeetingDialog from "../components/update-meeting-dialog";
 import { useState } from "react";
+import { toast } from "sonner";
+import ActiveState from "../components/active-state";
+import CancelledState from "../components/cancelled-state";
+import MeetingIdViewHeader from "../components/meetings-id-view-header";
+import ProcessingState from "../components/processing-state";
+import UpcomingState from "../components/upcoming-state";
+import UpdateMeetingDialog from "../components/update-meeting-dialog";
 
 interface Props {
   meetingId: string;
@@ -54,6 +58,12 @@ const MeetingIdView = ({ meetingId }: Props) => {
 
   const [updateMeetingDialogOpen, setupdateMeetingDialogOpen] = useState(false);
 
+  const isActive = data.status === "active";
+  const isUpcoming = data.status === "upcoming";
+  const isCancelled = data.status === "cancelled";
+  const isProcessing = data.status === "processing";
+  const isCompleted = data.status === "completed";
+
   return (
     <>
       <RemoveConfirmation />
@@ -69,6 +79,17 @@ const MeetingIdView = ({ meetingId }: Props) => {
           onEdit={() => setupdateMeetingDialogOpen(true)}
           onRemove={handleRemoveMeeting}
         />
+        {isCancelled && <CancelledState />}
+        {isActive && <ActiveState meetingId={meetingId} />}
+        {isUpcoming && (
+          <UpcomingState
+            meetingId={meetingId}
+            onCancelMeeting={() => {}}
+            isCancelling={false}
+          />
+        )}
+        {isProcessing && <ProcessingState />}
+        {isCompleted && <div>Completed</div>}
       </div>
     </>
   );
