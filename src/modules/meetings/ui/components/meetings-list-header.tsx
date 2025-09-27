@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { PlusIcon, XCircleIcon } from "lucide-react";
-import NewMeetingDialog from "./new-meeting-dialog";
+import NewMeetingDialog from "./update-meeting-dialog";
 import { useState } from "react";
 import MeetingSearchFilter from "./meetings-search-filters";
 import { StatusFilter } from "./status-filter";
